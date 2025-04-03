@@ -1,0 +1,6 @@
+@prjFullStack_HostAddress = http://localhost:5022
+
+GET {{prjFullStack_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
