@@ -1,3 +1,5 @@
+using prjFullStack;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .Build();
+
+var connectionString = config.GetConnectionString("ClientesDB");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -14,15 +23,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseDefaultFiles();
+
 app.UseStaticFiles();
 
-var summaries = new[]
+app.MapGet("/clientes", () =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    //var data = new Data(connectionString: connectionString);
+    var clientes = Data.GetClientes(connectionString);
 
-app.MapGet("/weatherforecast", () =>
-{
+    /*
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
@@ -31,13 +41,9 @@ app.MapGet("/weatherforecast", () =>
             summaries[Random.Shared.Next(summaries.Length)]
         ))
         .ToArray();
-    return forecast;
+    */
+    return clientes;
 })
-.WithName("GetWeatherForecast");
+.WithName("GetClientes");
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

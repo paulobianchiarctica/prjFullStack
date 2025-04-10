@@ -1,10 +1,59 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Clientes</title>
+    <script>
+
+</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#NovoEditar").hide();
+
+            $("#btnNovo").click(function () {
+                //$("p").hide();
+                $("#NovoEditar").show();
+                alert('clicou novo');
+            });
+        });
+        // clientes fixos - teste...
+        const clientes = [
+            {
+                nome: "Joana Silva1",
+                email: "joana@email.com",
+                ativo: true,
+                dataDeCadastro: "2024-01-15"
+            },
+            {
+                nome: "Joana Silva2",
+                email: "joana2@email.com",
+                ativo: true,
+                dataDeCadastro: "2024-01-16"
+            }
+        ];
+
+        function renderizarClientes() {
+            let lista = document.getElementById('lista');
+            var teste = '';
+            for (var i = 0; i < clientes.length; i++) {
+                let item = document.createElement('li');
+                item.appendChild(document.createTextNode(clientes[i].nome));
+                lista.appendChild(item);
+            }
+        }
+    </script>
 </head>
 <body>
+    
+    <input type="button" value="Novo" id="btnNovo"> | <input type="button" value="Listar" id="btnListar">
+
+    <div id="NovoEditar">
+        Nome: <input type="text" id="txtCliente" />
+        <br />
+        Email: <input type="text" id="txtEmail" />
+    </div>
 
 </body>
 </html>
