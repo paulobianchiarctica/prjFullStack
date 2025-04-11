@@ -1,4 +1,8 @@
+using Microsoft.IdentityModel.Tokens;
 using prjFullStack;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,4 +50,22 @@ app.MapGet("/clientes", () =>
 })
 .WithName("GetClientes");
 
+app.MapPost("/login", (LoginModel login) => {
+    if (login.Usuario == "admin" && login.Senha == "1234")
+    {
+        var claims = new[] { new Claim(ClaimTypes.Name, login.Usuario) };
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("chave-mega-ultra-super-secret@@2025!"));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(claims: claims, expires: DateTime.UtcNow.AddHours(1), signingCredentials: creds);
+        return Results.Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+    }
+    return Results.Unauthorized();
+});
+
 app.Run();
+
+class LoginModel
+{
+    public required string Usuario { get; set; }
+    public required string Senha { get; set; }
+}

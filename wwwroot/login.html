@@ -1,23 +1,118 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta charset="utf-8" />
-    <title>Clientes</title>
-    <script>
-
-</script>
+    <title>Login</title>
     <script type="text/javascript">
+
         $(document).ready(function () {
 
-            
+            function redirect(url) {
+                var ua = navigator.userAgent.toLowerCase(),
+                    isIE = ua.indexOf('msie') !== -1,
+                    version = parseInt(ua.substr(4, 2), 10);
+
+                // Internet Explorer 8 and lower
+                if (isIE && version < 9) {
+                    var link = document.createElement('a');
+                    link.href = url;
+                    document.body.appendChild(link);
+                    link.click();
+                }
+
+                // All other browsers can use the standard window.location.href (they don't lose HTTP_REFERER like Internet Explorer 8 & lower does)
+                else {
+                    window.location.href = url;
+                }
+            }
+
+            $("#myModal").modal();
+
+            $("#save").click(function () {
+                //alert('clicou save');
+                var user = $("#login").val();
+                var senha = $("#senha").val();
+                
+                var data = {
+                    Usuario: user,
+                    Senha: senha 
+                };
+
+                //alert(JSON.stringify(data));
+                var loginAPI = window.location.origin + '/login';
+
+                $.ajax({
+                    type: 'POST',
+                    url: loginAPI,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function (data) {
+                    //alert(data.token);
+                    sessionStorage.setItem("user", user);
+                    sessionStorage.setItem("tokenKey", data.token);
+                    redirect('clientes.html');
+                }).fail(function (data) {
+                    alert('Dados nao encontrados. Tente novamente.');
+                });
+
+                //alert(loginData.Usuario + '/' + loginData.Senha);
+                //$("#myModal").modal("hide");
+            });
         });
-        
+
     </script>
 </head>
 <body>
-    
-    Tela de login:
 
+    <div class="container">
+        <!-- Trigger the modal with a button -->
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Login</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>User:<input type="text" value="" id="login" /></p>
+                        <p>Senha:<input type="password" value="" id="senha" /></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="save">Entrar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--
+    <form id="myform" class="form-wizard">
+        <h2 class="form-wizard-heading">BootStap Wizard Form</h2>
+        <input type="text" value="" />
+        <input type="button" id="submitButton" value="teste" />
+    </form>
+
+    <!-- Modal
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Modal header</h3>
+        </div>
+        <div class="modal-body">
+            <p>One fine body…</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary">Save changes</button>
+        </div>
+    </div>
+    -->
 </body>
 </html>
