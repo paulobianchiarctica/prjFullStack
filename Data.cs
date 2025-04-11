@@ -6,6 +6,7 @@ namespace prjFullStack
     {
         public string id { get; internal set; }
         public string nome { get; internal set; }
+        public string email { get; internal set; }
         public string ativo { get; internal set; }
         public DateTime data_de_cadastro { get; internal set; }
     }
@@ -34,7 +35,7 @@ namespace prjFullStack
 
                     while (sqlReader.Read())
                     {
-                        ret.Add(new Cliente() {id = sqlReader.GetString(0), nome = sqlReader.GetString(1), ativo = sqlReader.GetString(2) , data_de_cadastro = (DateTime)sqlReader.GetSqlDateTime(3) });
+                        ret.Add(new Cliente() {id = sqlReader.GetString(0), nome = sqlReader.GetString(1), email = sqlReader.GetString(2), ativo = sqlReader.GetString(3) , data_de_cadastro = (DateTime)sqlReader.GetSqlDateTime(4) });
                     }
 
                 }

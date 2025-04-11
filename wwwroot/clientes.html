@@ -6,9 +6,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta charset="utf-8" />
     <title>Clientes</title>
-    <script>
-
-    </script>
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -24,6 +21,25 @@
                 $("#myModal").modal();
                 //alert('clicou novo');
             });
+
+            function ListarClientes()
+            {
+                var clientesAPI = window.location.origin + '/clientes';
+
+                $.ajax({
+                    type: 'GET',
+                    url: loginAPI,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function (data) {
+                    //alert(data.token);
+                    sessionStorage.setItem("user", user);
+                    sessionStorage.setItem("tokenKey", data.token);
+                    redirect('clientes.html');
+                }).fail(function (data) {
+                    alert('Dados nao encontrados. Tente novamente.');
+                });
+            }
         });
         // clientes fixos - teste...
         const clientes = [
@@ -56,6 +72,19 @@
     <span id="">Logged User:<input type="text" readonly="readonly" id="user" /></span>
     <br />
     <input type="button" value="Novo" id="btnNovo"> | <input type="button" value="Listar" id="btnListar">
+
+    <div class="container">
+        <table id="clientes" border="1">
+            <thead>Nome</thead>
+            <thead>Email</thead>
+            <thead>Ativo</thead>
+            <thead>Cadastro</thead>
+            <tr>Cliente</tr>
+            <tr>email@email.com.br</tr>
+            <tr>ativo</tr>
+            <tr>ativo</tr>
+        </table>
+    </div>
 
     <div class="container">
         <!-- Trigger the modal with a button -->
