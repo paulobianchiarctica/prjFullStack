@@ -1,0 +1,32 @@
+﻿CREATE TABLE clientes (
+  seq int NOT NULL identity,
+  id varchar(40) PRIMARY KEY,
+  nome varchar(50) NOT NULL,
+  email varchar(50) NOT NULL,
+  ativo varchar(1) NOT NULL,
+  data_de_cadastro DateTime NOT NULL default GETDATE()
+);
+
+INSERT INTO [dbo].[clientes]
+           ([id]
+           ,[nome]
+           ,[email]
+           ,[ativo])
+     VALUES
+           (NEWID()
+           ,'Nome teste'
+           ,'email@email.com.br'
+           ,'S');
+GO
+
+-- drop table clientes
+
+-- select * from clientes c
+
+-- testes geracao UUID sql server
+select id,data,len(id) tam from
+(
+select NEWID() id,GETDATE() data
+) a
+
+
